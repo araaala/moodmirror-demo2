@@ -5,14 +5,20 @@ import playlistRoutes from "./routes/playlist.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+/* ================= CORS CONFIG ================= */
+app.use(
+  cors({
+    origin: true,              // ✅ allow all origins dynamically
+    credentials: true,         // ✅ allow cookies/sessions
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// ✅ handle preflight requests properly
+app.options("*", cors());
+
 /* ================= Middleware ================= */
-app.use(cors({
-  origin: [
-    "http://localhost:5173",   // local development
-    process.env.CLIENT_URL     // production (Vercel)
-  ],
-  credentials: true
-}));
 app.use(express.json());
 
 /* ================= Routes ================= */
@@ -24,5 +30,5 @@ app.get("/health", (req, res) => {
 
 /* ================= Start Server ================= */
 app.listen(PORT, () => {
-  console.log(`✅ Demo server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
