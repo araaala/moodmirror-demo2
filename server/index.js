@@ -6,7 +6,13 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 /* ================= Middleware ================= */
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",   // local development
+    process.env.CLIENT_URL     // production (Vercel)
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 /* ================= Routes ================= */
