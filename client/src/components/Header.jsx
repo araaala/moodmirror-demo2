@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/moodmirror_logo.png";
 
 export default function Header({ step }) {
   const navigate = useNavigate();
@@ -9,11 +8,11 @@ export default function Header({ step }) {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
 
         <div className="flex items-center gap-4">
-          <img
-            src={logo}
-            alt="MoodMirror"
-            className="w-24 h-24 object-contain"
-          />
+         <img
+  src="/moodmirror_logo.png"
+  alt="MoodMirror logo"
+  className="h-10 w-auto"
+/>
 
           {step && (
             <div className="text-white/70 text-sm uppercase tracking-wider">
