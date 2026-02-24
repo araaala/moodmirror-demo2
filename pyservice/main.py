@@ -9,19 +9,19 @@ from deepface import DeepFace
 
 app = FastAPI()
 
-# ✅ VERY IMPORTANT: allow ALL origins while developing
+# ================= CORS =================
+# Allow localhost + deployed frontend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
+        "https://moodmirror-demo2.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
 
 # ================= MODELS =================
 
@@ -38,9 +38,9 @@ def health():
     return {"status": "pyservice running"}
 
 # ================= FACE DETECTION =================
+
 @app.post("/detect")
 def detect(req: DetectRequest):
-    import numpy as np
 
     b64 = req.imageBase64
     if "," in b64:
@@ -75,25 +75,26 @@ def detect(req: DetectRequest):
         confidence = float(emotions.get(dominant, 40)) / 100.0
 
         return {
-            "detectedMood": str(dominant),     # ✅ string
-            "confidence": float(confidence),   # ✅ python float
+            "detectedMood": str(dominant),
+            "confidence": float(confidence),
             "source": "deepface",
         }
 
-    except Exception:
+    except Exception as e:
         return {
             "detectedMood": "neutral",
             "confidence": 0.4,
             "source": "deepface-error",
         }
 
-
 # ================= YOUTUBE RECOMMEND =================
 
-SERVER_BASE = "http://127.0.0.1:5000"
+# 🔥 FIXED: use deployed backend (NOT localhost)
+SERVER_BASE = "https://moodmirror-demo2-server.onrender.com"
 
 @app.post("/recommend")
 def recommend(req: RecommendRequest):
+
     queries = {
         "happy": ["happy pop music"],
         "sad": ["sad songs playlist"],
@@ -115,6 +116,7 @@ def recommend(req: RecommendRequest):
     # remove duplicates
     seen = set()
     unique = []
+
     for i in items:
         vid = i.get("videoId")
         if vid and vid not in seen:
