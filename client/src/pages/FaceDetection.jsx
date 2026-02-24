@@ -24,7 +24,7 @@ export default function FaceDetection() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const PY_URL = "http://localhost:8000";
+  const PY_URL = import.meta.env.VITE_PY_URL;
 
   useEffect(() => {
     startCamera();
