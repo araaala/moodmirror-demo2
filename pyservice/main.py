@@ -10,15 +10,10 @@ from deepface import DeepFace
 app = FastAPI()
 
 # ================= CORS =================
-# Allow localhost + deployed frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "https://moodmirror-demo2.vercel.app",
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,   # ⚠️ MUST be False when using "*"
     allow_methods=["*"],
     allow_headers=["*"],
 )
