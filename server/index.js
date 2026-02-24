@@ -8,15 +8,12 @@ const PORT = process.env.PORT || 5000;
 /* ================= CORS CONFIG ================= */
 app.use(
   cors({
-    origin: true,              // ✅ allow all origins dynamically
-    credentials: true,         // ✅ allow cookies/sessions
+    origin: true, // dynamically allow all origins (Vercel + localhost)
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-// ✅ handle preflight requests properly
-app.options("*", cors());
 
 /* ================= Middleware ================= */
 app.use(express.json());
